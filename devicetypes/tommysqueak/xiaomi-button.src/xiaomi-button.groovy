@@ -119,13 +119,6 @@ private Map parseCatchAllMessage(String description) {
       case 0xFC02:
         log.debug 'ACCELERATION'
         break
-      case 0x0402:
-        log.debug 'TEMP'
-        // temp is last 2 data values. reverse to swap endian
-        String temp = cluster.data[-2..-1].reverse().collect { cluster.hex1(it) }.join()
-        def value = getTemperature(temp)
-        resultMap = getTemperatureResult(value)
-        break
     }
   }
 
@@ -185,19 +178,6 @@ private createButtonEvent(button) {
 
 private createPressEvent(button) {
   return createEvent([name: 'lastPress', value: now(), data:[buttonNumber: button], displayed: false])
-}
-
-//Need to reverse array of size 2
-private byte[] reverseArray(byte[] array) {
-  byte tmp;
-  tmp = array[1];
-  array[1] = array[0];
-  array[0] = tmp;
-  return array
-}
-
-private String swapEndianHex(String hex) {
-  reverseArray(hex.decodeHex()).encodeHex()
 }
 
 def push() {
