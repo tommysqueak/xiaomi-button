@@ -189,7 +189,6 @@ private createPressEvent(button) {
 def push() {
   sendEvent(name: "switch", value: "on", isStateChange: true, displayed: false)
   sendEvent(name: "switch", value: "off", isStateChange: true, displayed: false)
-  sendEvent(name: "momentary", value: "pushed", isStateChange: true)
   sendEvent(name: "button", value: "pushed", data: [buttonNumber: 1], descriptionText: "$device.displayName button 1 was pushed", isStateChange: true)
 }
 
