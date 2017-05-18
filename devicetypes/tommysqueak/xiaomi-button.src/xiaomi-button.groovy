@@ -21,19 +21,23 @@
  */
 metadata {
   definition (name: "Xiaomi Button", namespace: "tommysqueak", author: "Tom Philip") {
-    capability "Battery"
-    capability "Button"
-    capability "Holdable Button"
     capability "Actuator"
+    capability "Sensor"
+    capability "Battery"
+    capability "Button" // http://docs.smartthings.com/en/latest/capabilities-reference.html#button
+    capability "Holdable Button"
     capability "Switch"
     capability "Momentary"
     capability "Configuration"
-    capability "Sensor"
     capability "Refresh"
+    //   Health Check https://github.com/constjs/jcdevhandlers/commit/ea275dcf5b6ddfb617104e1f8950dd9f7916e276#diff-898033a1cdc1ae113328ecaeab60a1d6
 
     attribute "lastPress", "string"
+    //  TODO: capability "Battery" has the battery level
     attribute "batterylevel", "string"
     attribute "lastCheckin", "string"
+
+    // https://github.com/SmartThingsCommunity/SmartThingsPublic/blob/e5739fd425066e110b94f6e1e88c2347821a6326/devicetypes/smartthings/zigbee-button.src/zigbee-button.groovy
 
     fingerprint profileId: "0104", deviceId: "0104", inClusters: "0000, 0003", outClusters: "0000, 0004, 0003, 0006, 0008, 0005", manufacturer: "LUMI", model: "lumi.sensor_switch", deviceJoinName: "Xiaomi Button"
   }
@@ -48,10 +52,10 @@ metadata {
   }
 
   tiles(scale: 2) {
-    multiAttributeTile(name:"switch", type: "lighting", width: 6, height: 4, canChangeIcon: true) {
+    multiAttributeTile(name:"switch", type: "generic", width: 6, height: 4, canChangeIcon: true) {
       tileAttribute ("device.switch", key: "PRIMARY_CONTROL") {
-        attributeState("on", label:' push', action: "momentary.push", backgroundColor:"#53a7c0")
-        attributeState("off", label:' push', action: "momentary.push", backgroundColor:"#ffffff", nextState: "on")
+        attributeState("on", label: 'push', icon: 'st.Home.home30', action: "momentary.push", backgroundColor:"#53a7c0")
+        attributeState("off", label: 'push', icon: 'st.Home.home30', action: "momentary.push", backgroundColor:"#ffffff", nextState: "on")
       }
 
       tileAttribute("device.lastCheckin", key: "SECONDARY_CONTROL") {
@@ -92,6 +96,7 @@ def parse(String description) {
 }
 
 def configure(){
+  // http://www.silabs.com/documents/public/miscellaneous/AF-V2-API.pdf
   [
     "zdo bind 0x${device.deviceNetworkId} 1 2 0 {${device.zigbeeId}} {}", "delay 5000",
     "zcl global send-me-a-report 2 0 0x10 1 0 {01}", "delay 500",
@@ -104,6 +109,7 @@ def refresh(){
   "st rattr 0x${device.deviceNetworkId} 1 0 0"
   log.debug "refreshing"
 
+  // TODO: doesn't do anything, remove it? and the refresh tile?
   createEvent([name: 'batterylevel', value: '100', data:[buttonNumber: 1], displayed: false])
 }
 
