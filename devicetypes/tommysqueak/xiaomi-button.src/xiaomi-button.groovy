@@ -10,7 +10,7 @@
  *  on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License
  *  for the specific language governing permissions and limitations under the License.
  *
-  * Based on original DH by Eric Maycock 2015 and Rave from Lazcad
+ *  Based on a4refillpad's version based on original DH by Eric Maycock 2015 and Rave from Lazcad
  *  change log:
  *  added 100% battery max
  *  fixed battery parsing problem
