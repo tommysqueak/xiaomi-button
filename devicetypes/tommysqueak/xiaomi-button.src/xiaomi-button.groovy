@@ -12,6 +12,7 @@
  *
  *  Based on a4refillpad's version based on original DH by Eric Maycock 2015 and Rave from Lazcad
  *  change log:
+ *  icon for the handler to show in Things list
  *  added 100% battery max
  *  fixed battery parsing problem
  *  added lastcheckin attribute and tile
