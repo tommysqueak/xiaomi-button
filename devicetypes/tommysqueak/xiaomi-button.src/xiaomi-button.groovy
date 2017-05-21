@@ -12,6 +12,7 @@
  *
  *  Based on a4refillpad's version based on original DH by Eric Maycock 2015 and Rave from Lazcad
  *  change log:
+ *  Cleaner activity log, only reports key events - press, hold and battery level changes
  *  icon for the handler to show in Things list
  *  added 100% battery max
  *  fixed battery parsing problem
@@ -85,7 +86,7 @@ def parse(String description) {
   log.debug "Parsing '${description}'"
   //  send event for heartbeat
   def now = new Date().format("yyyy MMM dd EEE h:mm:ss a", location.timeZone)
-  sendEvent(name: "lastCheckin", value: now)
+  sendEvent(name: "lastCheckin", value: now, displayed: false)
 
   def results = []
   if (description?.startsWith('on/off: '))
