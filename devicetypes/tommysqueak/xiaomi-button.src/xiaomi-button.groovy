@@ -112,7 +112,7 @@ def refresh(){
   log.debug "refreshing"
 
   // TODO: doesn't do anything, remove it? and the refresh tile?
-  createEvent([name: 'batterylevel', value: '100', data:[buttonNumber: 1], displayed: false])
+  createEvent([name: "batterylevel", value: '100', data:[buttonNumber: 1], displayed: false])
 }
 
 private Map parseCatchAllMessage(String description) {
@@ -122,7 +122,7 @@ private Map parseCatchAllMessage(String description) {
   if (cluster) {
     switch(cluster.clusterId) {
       case 0x0000:
-        resultMap = getBatteryResult(cluster.data.last())
+        resultMap = createBatteryEvent(cluster.data.last())
         break
       case 0xFC02:
         log.debug 'ACCELERATION'
@@ -133,28 +133,16 @@ private Map parseCatchAllMessage(String description) {
   return resultMap
 }
 
-private Map getBatteryResult(rawValue) {
-  log.debug 'Battery'
-  def linkText = getLinkText(device)
+private Map createBatteryEvent(rawValue) {
+  log.debug "Battery '${rawValue}'"
+  int batteryLevel = rawValue
+  int maxBatteryLevel = 100
 
-  log.debug rawValue
-
-  int battValue = rawValue
-
-  def maxbatt = 100
-
-  if (battValue > maxbatt) {
-    battValue = maxbatt
+  if (batteryLevel > maxBatteryLevel) {
+    batteryLevel = maxBatteryLevel
   }
 
-  def result = [
-    name: 'battery',
-    value: battValue,
-    unit: "%"
-  ]
-
-  state.lastbatt = new Date().time
-  return createEvent(result)
+  return createEvent([name: 'battery', value: batteryLevel, unit: "%"])
 }
 
 private Map parseButtonActionMessage(String message) {
@@ -167,7 +155,7 @@ private Map parseButtonActionMessage(String message) {
 //this method determines if a press should count as a push or a hold and returns the relevant event type
 private createButtonEvent() {
   def currentTime = now()
-  def startOfPress = device.latestState('lastPress').date.getTime()
+  def startOfPress = device.latestState("lastPress").date.getTime()
   def timeDif = currentTime - startOfPress
   def holdTimeMillisec = (settings.holdTime?:3).toInteger() * 1000
 
@@ -180,7 +168,7 @@ private createButtonEvent() {
 }
 
 private createPressEvent() {
-  return createEvent([name: 'lastPress', value: now(), data:[buttonNumber: 1], displayed: false])
+  return createEvent([name: "lastPress", value: now(), data:[buttonNumber: 1], displayed: false])
 }
 
 def push() {
