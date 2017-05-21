@@ -89,7 +89,7 @@ def parse(String description) {
 
   def results = []
   if (description?.startsWith('on/off: '))
-    results = parseCustomMessage(description)
+    results = parseButtonActionMessage(description)
   if (description?.startsWith('catchall:'))
     results = parseCatchAllMessage(description)
 
@@ -149,27 +149,22 @@ private Map getBatteryResult(rawValue) {
   def result = [
     name: 'battery',
     value: battValue,
-    unit: "%",
-    isStateChange: true,
-    descriptionText : "${linkText} battery was ${battValue}%"
+    unit: "%"
   ]
 
-  log.debug result.descriptionText
   state.lastbatt = new Date().time
   return createEvent(result)
 }
 
-private Map parseCustomMessage(String description) {
-  if (description?.startsWith('on/off: ')) {
-    if (description == 'on/off: 0')     //button pressed
-      return createPressEvent(1)
-    else if (description == 'on/off: 1')   //button released
-      return createButtonEvent(1)
-  }
+private Map parseButtonActionMessage(String message) {
+  if (message == 'on/off: 0')     //button pressed
+    return createPressEvent()
+  else if (message == 'on/off: 1')   //button released
+    return createButtonEvent()
 }
 
 //this method determines if a press should count as a push or a hold and returns the relevant event type
-private createButtonEvent(button) {
+private createButtonEvent() {
   def currentTime = now()
   def startOfPress = device.latestState('lastPress').date.getTime()
   def timeDif = currentTime - startOfPress
@@ -178,19 +173,20 @@ private createButtonEvent(button) {
   if (timeDif < 0)
     return []  //likely a message sequence issue. Drop this press and wait for another. Probably won't happen...
   else if (timeDif < holdTimeMillisec)
-    return createEvent(name: "button", value: "pushed", data: [buttonNumber: button], descriptionText: "$device.displayName button $button was pushed", isStateChange: true)
+    return createEvent(name: "button", value: "pushed", data: [buttonNumber: 1], isStateChange: true)
   else
-    return createEvent(name: "button", value: "held", data: [buttonNumber: button], descriptionText: "$device.displayName button $button was held", isStateChange: true)
+    return createEvent(name: "button", value: "held", data: [buttonNumber: 1], isStateChange: true)
 }
 
-private createPressEvent(button) {
-  return createEvent([name: 'lastPress', value: now(), data:[buttonNumber: button], displayed: false])
+private createPressEvent() {
+  return createEvent([name: 'lastPress', value: now(), data:[buttonNumber: 1], displayed: false])
 }
 
 def push() {
-  sendEvent(name: "switch", value: "on", isStateChange: true, displayed: false)
-  sendEvent(name: "switch", value: "off", isStateChange: true, displayed: false)
-  sendEvent(name: "button", value: "pushed", data: [buttonNumber: 1], descriptionText: "$device.displayName button 1 was pushed", isStateChange: true)
+  //  TODO: Does it make sense to behave like a switch :/ ?
+  sendEvent(name: "switch", value: "on", displayed: false)
+  sendEvent(name: "switch", value: "off", displayed: false)
+  sendEvent(name: "button", value: "pushed", data: [buttonNumber: 1], isStateChange: true)
 }
 
 def on() {
