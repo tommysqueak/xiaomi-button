@@ -116,16 +116,14 @@ def refresh(){
 }
 
 private Map parseCatchAllMessage(String description) {
-  Map resultMap = [:]
   def cluster = zigbee.parse(description)
   log.debug cluster
-  if (cluster) {
-    if(cluster.clusterId == 0x0000) {
-      resultMap = createBatteryEvent(cluster.data.last())
-    }
-  }
 
-  return resultMap
+  if(cluster && cluster.clusterId == 0x0000) {
+    return [createBatteryEvent(cluster.data.last())]
+  else {
+    []
+  }
 }
 
 private Map createBatteryEvent(rawValue) {
@@ -157,13 +155,13 @@ private createButtonEvent() {
   if (timeDif < 0)
     return []  //likely a message sequence issue. Drop this press and wait for another. Probably won't happen...
   else if (timeDif < holdTimeMillisec)
-    return createEvent(name: "button", value: "pushed", data: [buttonNumber: 1], isStateChange: true)
+    return [createEvent(name: "button", value: "pushed", data: [buttonNumber: 1], isStateChange: true)]
   else
-    return createEvent(name: "button", value: "held", data: [buttonNumber: 1], isStateChange: true)
+    return [createEvent(name: "button", value: "held", data: [buttonNumber: 1], isStateChange: true)]
 }
 
 private createPressEvent() {
-  return createEvent([name: "lastPress", value: now(), data:[buttonNumber: 1], displayed: false])
+  return [createEvent([name: "lastPress", value: now(), data:[buttonNumber: 1], displayed: false])]
 }
 
 def push() {
