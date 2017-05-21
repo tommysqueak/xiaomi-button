@@ -120,13 +120,8 @@ private Map parseCatchAllMessage(String description) {
   def cluster = zigbee.parse(description)
   log.debug cluster
   if (cluster) {
-    switch(cluster.clusterId) {
-      case 0x0000:
-        resultMap = createBatteryEvent(cluster.data.last())
-        break
-      case 0xFC02:
-        log.debug 'ACCELERATION'
-        break
+    if(cluster.clusterId == 0x0000) {
+      resultMap = createBatteryEvent(cluster.data.last())
     }
   }
 
