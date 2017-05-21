@@ -84,15 +84,15 @@ metadata {
 
 def parse(String description) {
   log.debug "Parsing '${description}'"
-  //  send event for heartbeat
-  def now = new Date().format("yyyy MMM dd EEE h:mm:ss a", location.timeZone)
-  sendEvent(name: "lastCheckin", value: now, displayed: false)
 
   def results = []
   if (description?.startsWith('on/off: '))
     results = parseButtonActionMessage(description)
   if (description?.startsWith('catchall:'))
     results = parseCatchAllMessage(description)
+
+  def now = new Date().format("yyyy MMM dd EEE h:mm:ss a", location.timeZone)
+  results << createEvent(name: "lastCheckin", value: now, displayed: false)
 
   return results;
 }
