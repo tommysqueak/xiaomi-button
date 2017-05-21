@@ -112,7 +112,7 @@ def refresh(){
   log.debug "refreshing"
 
   // TODO: doesn't do anything, remove it? and the refresh tile?
-  createEvent([name: "batterylevel", value: '100', data:[buttonNumber: 1], displayed: false])
+  createEvent(name: "batterylevel", value: '100', data:[buttonNumber: 1], displayed: false)
 }
 
 private Map parseCatchAllMessage(String description) {
@@ -135,7 +135,7 @@ private Map createBatteryEvent(rawValue) {
     batteryLevel = maxBatteryLevel
   }
 
-  return createEvent([name: 'battery', value: batteryLevel, unit: "%"])
+  return createEvent(name: 'battery', value: batteryLevel, unit: "%")
 }
 
 private Map parseButtonActionMessage(String message) {
@@ -161,7 +161,7 @@ private createButtonEvent() {
 }
 
 private createPressEvent() {
-  return [createEvent([name: "lastPress", value: now(), data:[buttonNumber: 1], displayed: false])]
+  return [createEvent(name: "lastPress", value: now(), data:[buttonNumber: 1], displayed: false)]
 }
 
 def push() {
