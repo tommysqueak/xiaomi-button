@@ -55,13 +55,9 @@ metadata {
         attributeState("on", label: 'push', icon: 'st.Home.home30', action: "momentary.push", backgroundColor:"#53a7c0")
         attributeState("off", label: 'push', icon: 'st.Home.home30', action: "momentary.push", backgroundColor:"#ffffff", nextState: "on")
       }
-
-      tileAttribute("device.lastCheckin", key: "SECONDARY_CONTROL") {
-        attributeState("default", label:'Last Update: ${currentValue}',icon: "st.Health & Wellness.health9")
-      }
     }
 
-    valueTile("battery", "device.battery", decoration: "flat", inactiveLabel: false, width: 2, height: 2) {
+    valueTile("battery", "device.battery", decoration: "flat", inactiveLabel: false, width: 4, height: 1) {
       state "battery", label:'${currentValue}% battery', unit:""
     }
 
@@ -69,8 +65,12 @@ metadata {
       state "configure", label:'', action:"configuration.configure", icon:"st.secondary.configure"
     }
 
+    valueTile("lastCheckin", "device.lastCheckin", decoration: "flat", inactiveLabel: false, width: 4, height: 1) {
+      state "lastCheckin", label:'Last check-in:\n ${currentValue}'
+    }
+
     main (["switch"])
-    details(["switch", "battery", "configure"])
+    details(["switch", "battery", "lastCheckin", "configure"])
   }
 }
 
@@ -83,7 +83,7 @@ def parse(String description) {
   if (description?.startsWith('catchall:'))
     results = parseCatchAllMessage(description)
 
-  def now = new Date().format("yyyy MMM dd EEE h:mm:ss a", location.timeZone)
+  def now = new Date().format("EEE, d MMM yyyy HH:mm:ss",location.timeZone)
   results << createEvent(name: "lastCheckin", value: now, displayed: false)
 
   return results;
