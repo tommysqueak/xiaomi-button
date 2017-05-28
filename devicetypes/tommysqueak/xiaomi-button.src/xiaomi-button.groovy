@@ -12,6 +12,7 @@
  *
  *  Based on a4refillpad's version based on original DH by Eric Maycock 2015 and Rave from Lazcad
  *  change log:
+ *  Exposes the number of buttons it has. 1!
  *  Cleaner activity log, only reports key events - press, hold and battery level changes
  *  icon for the handler to show in Things list
  *  added 100% battery max
@@ -26,8 +27,7 @@ metadata {
     capability "Actuator"
     capability "Sensor"
     capability "Battery"
-    //  Store the numberOfButtons - 1
-    capability "Button" // http://docs.smartthings.com/en/latest/capabilities-reference.html#button
+    capability "Button"
     capability "Holdable Button"
     capability "Switch"
     capability "Momentary"
@@ -172,17 +172,30 @@ private ArrayList createPressEvent() {
   return [createEvent(name: "lastPress", value: now(), data:[buttonNumber: 1], displayed: false)]
 }
 
-def push() {
+void push() {
   //  TODO: Does it make sense to behave like a switch :/ ?
   sendEvent(name: "switch", value: "on", displayed: false)
   sendEvent(name: "switch", value: "off", displayed: false)
   sendEvent(name: "button", value: "pushed", data: [buttonNumber: 1], isStateChange: true)
 }
 
-def on() {
+void on() {
   push()
 }
 
-def off() {
+void off() {
   push()
+}
+
+void initialize() {
+  //  Configure the initial state.
+  sendEvent(name: "numberOfButtons", value: 1, displayed: false)
+}
+
+void installed() {
+	initialize()
+}
+
+void updated() {
+	initialize()
 }
