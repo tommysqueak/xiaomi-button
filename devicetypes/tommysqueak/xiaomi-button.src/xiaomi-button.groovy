@@ -52,8 +52,9 @@ metadata {
   tiles(scale: 2) {
     multiAttributeTile(name:"switch", type: "generic", width: 6, height: 4, canChangeIcon: true) {
       tileAttribute ("device.switch", key: "PRIMARY_CONTROL") {
-        attributeState("on", label: 'push', icon: 'st.Home.home30', action: "momentary.push", backgroundColor:"#53a7c0")
-        attributeState("off", label: 'push', icon: 'st.Home.home30', action: "momentary.push", backgroundColor:"#ffffff", nextState: "on")
+        attributeState "off", label: 'push', action: "momentary.push", backgroundColor:"#53a7c0", nextState: "turningOn"
+        attributeState "turningOn", label: 'pushing', action: "momentary.push", backgroundColor:"#79b821"
+        attributeState "on", label: 'push', action: "momentary.push", backgroundColor:"#79b821"
       }
     }
 
@@ -69,7 +70,13 @@ metadata {
       state "lastCheckin", label:'Last check-in:\n ${currentValue}'
     }
 
-    main (["switch"])
+    standardTile("menuButton", "device.switch", inactiveLabel: false, decoration: "flat", width: 2, height: 2) {
+      state "off", label: 'push', icon: 'st.Home.home30', action: "momentary.push", backgroundColor:"#ffffff", nextState: "turningOn"
+      state "turningOn", label: 'pushing', icon: 'st.Home.home30', action: "momentary.push", backgroundColor:"#79b821"
+      state "on", label: 'push', icon: 'st.Home.home30', action: "momentary.push", backgroundColor:"#79b821"
+    }
+
+    main (["menuButton"])
     details(["switch", "battery", "lastCheckin", "configure"])
   }
 }
@@ -155,7 +162,6 @@ private ArrayList createPressEvent() {
 }
 
 void push() {
-  //  TODO: Does it make sense to behave like a switch :/ ?
   sendEvent(name: "switch", value: "on", displayed: false)
   sendEvent(name: "switch", value: "off", displayed: false)
   sendEvent(name: "button", value: "pushed", data: [buttonNumber: 1], isStateChange: true)
