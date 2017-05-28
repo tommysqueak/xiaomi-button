@@ -32,12 +32,10 @@ metadata {
     capability "Switch"
     capability "Momentary"
     capability "Configuration"
-    capability "Refresh"
     //   Health Check https://github.com/constjs/jcdevhandlers/commit/ea275dcf5b6ddfb617104e1f8950dd9f7916e276#diff-898033a1cdc1ae113328ecaeab60a1d6
 
     attribute "lastPress", "string"
     attribute "lastCheckin", "string"
-
 
     fingerprint profileId: "0104", deviceId: "0104", inClusters: "0000, 0003", outClusters: "0000, 0004, 0003, 0006, 0008, 0005", manufacturer: "LUMI", model: "lumi.sensor_switch", deviceJoinName: "Xiaomi Button"
   }
@@ -67,16 +65,12 @@ metadata {
       state "battery", label:'${currentValue}% battery', unit:""
     }
 
-    standardTile("refresh", "device.refresh", inactiveLabel: false, decoration: "flat", width: 2, height: 2) {
-      state "default", action:"refresh.refresh", icon:"st.secondary.refresh"
-    }
-
     standardTile("configure", "device.configure", inactiveLabel: false, decoration: "flat", width: 2, height: 2) {
       state "configure", label:'', action:"configuration.configure", icon:"st.secondary.configure"
     }
 
     main (["switch"])
-    details(["switch", "battery", "refresh", "configure"])
+    details(["switch", "battery", "configure"])
   }
 }
 
@@ -102,12 +96,6 @@ def configure(){
     "zcl global send-me-a-report 2 0 0x10 1 0 {01}", "delay 500",
     "send 0x${device.deviceNetworkId} 1 2"
   ]
-}
-
-def refresh(){
-  "st rattr 0x${device.deviceNetworkId} 1 2 0"
-  "st rattr 0x${device.deviceNetworkId} 1 0 0"
-  log.debug "refreshing"
 }
 
 private ArrayList parseCatchAllMessage(String description) {
