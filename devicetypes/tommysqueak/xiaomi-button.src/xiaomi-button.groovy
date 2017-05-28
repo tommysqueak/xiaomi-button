@@ -26,6 +26,7 @@ metadata {
     capability "Actuator"
     capability "Sensor"
     capability "Battery"
+    //  Store the numberOfButtons - 1
     capability "Button" // http://docs.smartthings.com/en/latest/capabilities-reference.html#button
     capability "Holdable Button"
     capability "Switch"
@@ -154,12 +155,17 @@ private ArrayList createButtonEvent() {
   def holdTimeMillisec = (settings.holdTime?:3).toInteger() * 1000
 
   if (timeDif < 0) {
+    log.debug "Message arrived out of sequence. lastPress: ${startOfPress} and now: ${currentTime}"
     return []  //likely a message sequence issue. Drop this press and wait for another. Probably won't happen...
   }
-  else if (timeDif < holdTimeMillisec)
+  else if (timeDif < holdTimeMillisec) {
+    log.debug "Button pushed. ${timeDif}"
     return [createEvent(name: "button", value: "pushed", data: [buttonNumber: 1], isStateChange: true)]
-  else
+  }
+  else {
+    log.debug "Button held. ${timeDif}"
     return [createEvent(name: "button", value: "held", data: [buttonNumber: 1], isStateChange: true)]
+  }
 }
 
 private ArrayList createPressEvent() {
