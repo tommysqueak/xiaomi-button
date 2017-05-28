@@ -115,18 +115,19 @@ def refresh(){
   createEvent(name: "batterylevel", value: '100', data:[buttonNumber: 1], displayed: false)
 }
 
-private Map parseCatchAllMessage(String description) {
+private ArrayList parseCatchAllMessage(String description) {
   def cluster = zigbee.parse(description)
   log.debug cluster
 
   if(cluster && cluster.clusterId == 0x0000) {
     return [createBatteryEvent(cluster.data.last())]
+  }
   else {
-    []
+    return []
   }
 }
 
-private Map createBatteryEvent(rawValue) {
+private createBatteryEvent(rawValue) {
   log.debug "Battery '${rawValue}'"
   int batteryLevel = rawValue
   int maxBatteryLevel = 100
@@ -138,7 +139,7 @@ private Map createBatteryEvent(rawValue) {
   return createEvent(name: 'battery', value: batteryLevel, unit: "%")
 }
 
-private Map parseButtonActionMessage(String message) {
+private ArrayList parseButtonActionMessage(String message) {
   if (message == 'on/off: 0')     //button pressed
     return createPressEvent()
   else if (message == 'on/off: 1')   //button released
@@ -146,21 +147,22 @@ private Map parseButtonActionMessage(String message) {
 }
 
 //this method determines if a press should count as a push or a hold and returns the relevant event type
-private createButtonEvent() {
+private ArrayList createButtonEvent() {
   def currentTime = now()
   def startOfPress = device.latestState("lastPress").date.getTime()
   def timeDif = currentTime - startOfPress
   def holdTimeMillisec = (settings.holdTime?:3).toInteger() * 1000
 
-  if (timeDif < 0)
+  if (timeDif < 0) {
     return []  //likely a message sequence issue. Drop this press and wait for another. Probably won't happen...
+  }
   else if (timeDif < holdTimeMillisec)
     return [createEvent(name: "button", value: "pushed", data: [buttonNumber: 1], isStateChange: true)]
   else
     return [createEvent(name: "button", value: "held", data: [buttonNumber: 1], isStateChange: true)]
 }
 
-private createPressEvent() {
+private ArrayList createPressEvent() {
   return [createEvent(name: "lastPress", value: now(), data:[buttonNumber: 1], displayed: false)]
 }
 
