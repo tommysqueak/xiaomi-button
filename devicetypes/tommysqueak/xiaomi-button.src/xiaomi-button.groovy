@@ -12,6 +12,19 @@
  *  on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License
  *  for the specific language governing permissions and limitations under the License.
  *
+ *
+ *  Revision History
+ *  ==============================================
+ *  2017-09-16 - Battery icon - Credit: Power bank by Gregor Cresnar from the Noun Project.
+ *  2017-09-16 - Special low level battery warning event.
+ *  2017-05-28 - Improved UI - no need for refresh. last check is secondary info so move off hero tile.
+ *               Push feedback for in-app button pushes, and so it doesn't look disabled.
+ *  2017-05-28 - Use the battery level attribute, instead of custom, from the Battery capability.
+ *  2017-05-21 - Cleaned up the activity log, so we're only reporting interesting events.
+ *  2017-05-17 - Icon for the showing in the Things list.
+ *  2017-05-17 - Code tidy up, reformat and dead code removal.
+ *
+ *  Previous history:
  *  Based on a4refillpad's version based on original DH by Eric Maycock 2015 and Rave from Lazcad
  *  change log:
  *  Exposes the number of buttons it has. 1!
@@ -58,18 +71,18 @@ metadata {
         attributeState "turningOn", label: 'pushing', action: "momentary.push", backgroundColor:"#79b821"
         attributeState "on", label: 'push', action: "momentary.push", backgroundColor:"#79b821"
       }
-    }
 
-    valueTile("battery", "device.battery", decoration: "flat", inactiveLabel: false, width: 4, height: 1) {
-      state "battery", label:'${currentValue}% battery', unit:""
-    }
-
-    standardTile("configure", "device.configure", inactiveLabel: false, decoration: "flat", width: 2, height: 2) {
-      state "configure", label:'', action:"configuration.configure", icon:"st.secondary.configure"
+      tileAttribute("device.battery", key: "SECONDARY_CONTROL") {
+				attributeState "default", label:'${currentValue}%', unit:"%", icon:"https://raw.githubusercontent.com/tommysqueak/xiaomi-button/master/icons/battery.png"
+			}
     }
 
     valueTile("lastCheckin", "device.lastCheckin", decoration: "flat", inactiveLabel: false, width: 4, height: 1) {
       state "lastCheckin", label:'Last check-in:\n ${currentValue}'
+    }
+
+    standardTile("configure", "device.configure", inactiveLabel: false, decoration: "flat", width: 2, height: 1) {
+      state "configure", label:'', action:"configuration.configure", icon:"st.secondary.configure"
     }
 
     standardTile("menuButton", "device.switch", inactiveLabel: false, decoration: "flat", width: 2, height: 2) {
@@ -79,7 +92,7 @@ metadata {
     }
 
     main (["menuButton"])
-    details(["switch", "battery", "lastCheckin", "configure"])
+    details(["switch", "lastCheckin", "configure"])
   }
 }
 
@@ -121,6 +134,7 @@ private ArrayList parseCatchAllMessage(String description) {
 
 private createBatteryEvent(rawValue) {
   log.debug "Battery '${rawValue}'"
+
   int batteryLevel = rawValue
   int maxBatteryLevel = 100
 
