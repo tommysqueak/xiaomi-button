@@ -128,7 +128,15 @@ private createBatteryEvent(rawValue) {
     batteryLevel = maxBatteryLevel
   }
 
-  return createEvent(name: 'battery', value: batteryLevel, unit: "%")
+  def map = [ name: "battery", unit: "%" ]
+	if (cmd.batteryLevel == 0xFF) {  // Special value for low battery alert
+		map.value = 1
+		map.descriptionText = "Low Battery"
+	} else {
+		map.value = batteryLevel
+	}
+
+  return createEvent(map)
 }
 
 private ArrayList parseButtonActionMessage(String message) {
