@@ -67,9 +67,9 @@ metadata {
   tiles(scale: 2) {
     multiAttributeTile(name:"switch", type: "generic", width: 6, height: 4, canChangeIcon: true) {
       tileAttribute ("device.switch", key: "PRIMARY_CONTROL") {
-        attributeState "off", label: 'push', action: "momentary.push", backgroundColor:"#53a7c0", nextState: "turningOn"
-        attributeState "turningOn", label: 'pushing', action: "momentary.push", backgroundColor:"#79b821"
-        attributeState "on", label: 'push', action: "momentary.push", backgroundColor:"#79b821"
+        attributeState "off", label: 'push', action: "momentary.push", backgroundColor:"#95cee2", nextState: "turningOn"
+        attributeState "turningOn", label: 'pushing', action: "momentary.push", backgroundColor:"#00a0dc"
+        attributeState "on", label: 'push', action: "momentary.push", backgroundColor:"#00a0dc"
       }
 
       tileAttribute("device.battery", key: "SECONDARY_CONTROL") {
@@ -87,8 +87,8 @@ metadata {
 
     standardTile("menuButton", "device.switch", inactiveLabel: false, decoration: "flat", width: 2, height: 2) {
       state "off", label: 'push', icon: 'st.Home.home30', action: "momentary.push", backgroundColor:"#ffffff", nextState: "turningOn"
-      state "turningOn", label: 'pushing', icon: 'st.Home.home30', action: "momentary.push", backgroundColor:"#79b821"
-      state "on", label: 'push', icon: 'st.Home.home30', action: "momentary.push", backgroundColor:"#79b821"
+      state "turningOn", label: 'pushing', icon: 'st.Home.home30', action: "momentary.push", backgroundColor:"#00a0dc"
+      state "on", label: 'push', icon: 'st.Home.home30', action: "momentary.push", backgroundColor:"#00a0dc"
     }
 
     main (["menuButton"])
