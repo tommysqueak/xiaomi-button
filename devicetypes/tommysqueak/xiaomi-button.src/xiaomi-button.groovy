@@ -38,14 +38,11 @@
  *
  */
 metadata {
-  definition (name: "Xiaomi Button", namespace: "tommysqueak", author: "Tom Philip") {
-    capability "Actuator"
-    capability "Sensor"
-    capability "Battery"
+  definition (name: "Xiaomi Button", namespace: "tommysqueak", author: "Tom Philip", ocfDeviceType: "oic.d.switch", mcdSync: true, runLocally: true, vid: "f3b36157-e8d6-3942-b7b7-3a92ef13693c", mnmn: "SmartThingsCommunity") {
     capability "Button"
     capability "Holdable Button"
-    capability "Switch"
     capability "Momentary"
+    capability "Battery"
     capability "Configuration"
     //   Health Check https://github.com/constjs/jcdevhandlers/commit/ea275dcf5b6ddfb617104e1f8950dd9f7916e276#diff-898033a1cdc1ae113328ecaeab60a1d6
 
@@ -65,11 +62,10 @@ metadata {
   }
 
   tiles(scale: 2) {
-    multiAttributeTile(name:"switch", type: "generic", width: 6, height: 4, canChangeIcon: true) {
-      tileAttribute ("device.switch", key: "PRIMARY_CONTROL") {
-        attributeState "off", label: 'push', action: "momentary.push", backgroundColor:"#95cee2", nextState: "turningOn"
-        attributeState "turningOn", label: 'pushing', action: "momentary.push", backgroundColor:"#00a0dc"
-        attributeState "on", label: 'push', action: "momentary.push", backgroundColor:"#00a0dc"
+    multiAttributeTile(name:"button", type: "generic", width: 6, height: 4, canChangeIcon: true) {
+      tileAttribute ("device.button", key: "PRIMARY_CONTROL") {
+        attributeState "push", label: 'pushing', action: "momentary.push", backgroundColor:"#00a0dc"
+        attributeState "held", label: 'push', action: "momentary.push", backgroundColor:"#00a0dc"
       }
 
       tileAttribute("device.battery", key: "SECONDARY_CONTROL") {
@@ -85,14 +81,8 @@ metadata {
       state "configure", label:'', action:"configuration.configure", icon:"st.secondary.configure"
     }
 
-    standardTile("menuButton", "device.switch", inactiveLabel: false, decoration: "flat", width: 2, height: 2) {
-      state "off", label: 'push', icon: 'st.Home.home30', action: "momentary.push", backgroundColor:"#ffffff", nextState: "turningOn"
-      state "turningOn", label: 'pushing', icon: 'st.Home.home30', action: "momentary.push", backgroundColor:"#00a0dc"
-      state "on", label: 'push', icon: 'st.Home.home30', action: "momentary.push", backgroundColor:"#00a0dc"
-    }
-
-    main (["menuButton"])
-    details(["switch", "lastCheckin", "configure"])
+    main (["button"])
+    details(["button", "lastCheckin", "configure"])
   }
 }
 
@@ -186,22 +176,13 @@ private ArrayList createPressEvent() {
 }
 
 void push() {
-  sendEvent(name: "switch", value: "on", displayed: false)
-  sendEvent(name: "switch", value: "off", displayed: false)
   sendEvent(name: "button", value: "pushed", data: [buttonNumber: 1], isStateChange: true)
-}
-
-void on() {
-  push()
-}
-
-void off() {
-  push()
 }
 
 void initialize() {
   //  Configure the initial state.
   sendEvent(name: "numberOfButtons", value: 1, displayed: false)
+  sendEvent(name: "supportedButtonValues", value: ['pushed', 'held'], displayed: false)
 }
 
 void installed() {
