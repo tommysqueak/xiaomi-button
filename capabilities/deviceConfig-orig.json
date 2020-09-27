@@ -1,0 +1,222 @@
+{
+    "type": "dth",
+    "iconUrl": null,
+    "dashboard": {
+        "states": [
+            {
+                "component": "main",
+                "capability": "battery",
+                "version": 1,
+                "values": [],
+                "patch": [],
+                "visibleCondition": null
+            },
+            {
+                "component": "main",
+                "capability": "configuration",
+                "version": 1,
+                "values": [],
+                "patch": [],
+                "visibleCondition": null
+            },
+            {
+                "component": "main",
+                "capability": "momentary",
+                "version": 1,
+                "values": [],
+                "patch": [],
+                "visibleCondition": null
+            },
+            {
+                "component": "main",
+                "capability": "button",
+                "version": 1,
+                "values": [],
+                "patch": [],
+                "visibleCondition": null
+            },
+            {
+                "component": "main",
+                "capability": "holdableButton",
+                "version": 1,
+                "values": [],
+                "patch": [],
+                "visibleCondition": null
+            }
+        ],
+        "actions": [
+            {
+                "component": "main",
+                "capability": "battery",
+                "version": 1,
+                "values": [],
+                "patch": [],
+                "visibleCondition": null
+            },
+            {
+                "component": "main",
+                "capability": "configuration",
+                "version": 1,
+                "values": [],
+                "patch": [],
+                "visibleCondition": null
+            },
+            {
+                "component": "main",
+                "capability": "momentary",
+                "version": 1,
+                "values": [],
+                "patch": [],
+                "visibleCondition": null
+            },
+            {
+                "component": "main",
+                "capability": "button",
+                "version": 1,
+                "values": [],
+                "patch": [],
+                "visibleCondition": null
+            },
+            {
+                "component": "main",
+                "capability": "holdableButton",
+                "version": 1,
+                "values": [],
+                "patch": [],
+                "visibleCondition": null
+            }
+        ]
+    },
+    "detailView": [
+        {
+            "component": "main",
+            "capability": "battery",
+            "version": 1,
+            "values": [],
+            "patch": [],
+            "visibleCondition": null
+        },
+        {
+            "component": "main",
+            "capability": "configuration",
+            "version": 1,
+            "values": [],
+            "patch": [],
+            "visibleCondition": null
+        },
+        {
+            "component": "main",
+            "capability": "momentary",
+            "version": 1,
+            "values": [],
+            "patch": [],
+            "visibleCondition": null
+        },
+        {
+            "component": "main",
+            "capability": "button",
+            "version": 1,
+            "values": [],
+            "patch": [],
+            "visibleCondition": null
+        },
+        {
+            "component": "main",
+            "capability": "holdableButton",
+            "version": 1,
+            "values": [],
+            "patch": [],
+            "visibleCondition": null
+        }
+    ],
+    "automation": {
+        "conditions": [
+            {
+                "component": "main",
+                "capability": "battery",
+                "version": 1,
+                "values": [],
+                "patch": [],
+                "visibleCondition": null
+            },
+            {
+                "component": "main",
+                "capability": "configuration",
+                "version": 1,
+                "values": [],
+                "patch": [],
+                "visibleCondition": null
+            },
+            {
+                "component": "main",
+                "capability": "momentary",
+                "version": 1,
+                "values": [],
+                "patch": [],
+                "visibleCondition": null
+            },
+            {
+                "component": "main",
+                "capability": "button",
+                "version": 1,
+                "values": [],
+                "patch": [],
+                "visibleCondition": null
+            },
+            {
+                "component": "main",
+                "capability": "holdableButton",
+                "version": 1,
+                "values": [],
+                "patch": [],
+                "visibleCondition": null
+            }
+        ],
+        "actions": [
+            {
+                "component": "main",
+                "capability": "battery",
+                "version": 1,
+                "values": [],
+                "patch": [],
+                "visibleCondition": null
+            },
+            {
+                "component": "main",
+                "capability": "configuration",
+                "version": 1,
+                "values": [],
+                "patch": [],
+                "visibleCondition": null
+            },
+            {
+                "component": "main",
+                "capability": "momentary",
+                "version": 1,
+                "values": [],
+                "patch": [],
+                "visibleCondition": null
+            },
+            {
+                "component": "main",
+                "capability": "button",
+                "version": 1,
+                "values": [],
+                "patch": [],
+                "visibleCondition": null
+            },
+            {
+                "component": "main",
+                "capability": "holdableButton",
+                "version": 1,
+                "values": [],
+                "patch": [],
+                "visibleCondition": null
+            }
+        ]
+    },
+    "presentationId": "0e1c87d9-4177-32d4-86c1-3f40221c3b21",
+    "manufacturerName": "SmartThingsCommunity",
+    "vid": "0e1c87d9-4177-32d4-86c1-3f40221c3b21",
+    "mnmn": "SmartThingsCommunity"
+}
