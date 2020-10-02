@@ -38,7 +38,7 @@
  *
  */
 metadata {
-  definition (name: "Xiaomi Button", namespace: "tommysqueak", author: "Tom Philip", ocfDeviceType: "oic.d.switch", mcdSync: true, runLocally: true, vid: "f3b36157-e8d6-3942-b7b7-3a92ef13693c", mnmn: "SmartThingsCommunity") {
+  definition (name: "Xiaomi Button v6", namespace: "tommysqueak", author: "Tom Philip", ocfDeviceType: "x.com.st.d.irblaster", mcdSync: true, runLocally: true, vid: "f3b36157-e8d6-3942-b7b7-3a92ef13693c", mnmn: "SmartThingsCommunity") {
     capability "Button"
     capability "Holdable Button"
     capability "Momentary"
